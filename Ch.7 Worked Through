@@ -1,0 +1,79 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+##7.3.4 Exercises
+###1
+```{r}
+?diamonds
+diamonds
+```
+The x variable is the length in nm, the y variable is the width in nm, and the z variable is the depth in nm. These are all measurments of diamonds. 
+
+###2
+```{r}
+ggplot(diamonds) +
+  geom_histogram(mapping = aes(x = price))
+```
+There were not many low price diamonds which is not surprising as diamonds are usually expensive.
+
+###3
+```{r}
+count(filter(diamonds, carat == 0.99))
+```
+There 23 diamonds that have exactly 0.99 carats.
+```{r}
+count(filter(diamonds, carat == 1))
+```
+I think the cause in the difference is due to cut. 
+
+###4 
+```{r}
+ggplot(diamonds) + 
+  geom_histogram(mapping = aes(x = y), binwidth = 0.5) +
+  coord_cartesian(ylim = c(0, 50))
+ggplot(diamonds) + 
+  geom_histogram(mapping = aes(x = y), binwidth = 0.5) +
+  coord_cartesian(xlim = c(0, 50))
+ggplot(diamonds) + 
+  geom_histogram(mapping = aes(x = y)) +
+  coord_cartesian(ylim = c(0, 50))
+```
+The binwidth is automatically set at default when it is not set. 
+
+##7.4.1 Exercises
+###1
+Missing values are removed and a warning message appears on screen when a histogram has missing values. In a bar chart, the missing values are treated like another catgory.
+
+###2
+```{r}
+?mean
+```
+`na.rm = TRUE` in `mean()` and `sum()` indicates whether the missing values should be included or not.
+
+##7.5.1.1 Exercises
+###1
+```{r}
+nycflights13::flights %>%
+  mutate(
+    cancelled = is.na(dep_time),
+    sched_hour = sched_dep_time %/% 100,
+    sched_min = sched_dep_time %% 100,
+    sched_dep_time = sched_hour + sched_min / 60
+  ) %>%
+  ggplot() +
+  geom_boxplot(mapping = aes(y = sched_dep_time, x = cancelled))
+```
+###2
+The variable most important in the diamonds dataset is most important for predicting the price of a diamond.
+```{r}
+ggplot(diamonds, aes(x = cut, y = carat)) + 
+  geom_boxplot()
+```
+A larger diamond can be sold even when it has a lower quality cut and vice versa.
+###3
+
